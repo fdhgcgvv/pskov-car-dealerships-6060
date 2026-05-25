@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое избранное - Автосалоны Пскова</title>
+    <style>
+        /* --- Сброс стилей и шрифты --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Шапка сайта (Header) --- */
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+       .header-inner {
+            display: flex;              
+            align-items: center;         
+            max-width: 1200px;            
+            margin: 0 auto;               
+        }
+
+        .logo img {
+            height: auto;
+            width: 150px;
+        }
+
+        .header-inner h1 {
+            margin: 0 20px;              
+            font-size: 20px;             
+            flex-grow: 1;               
+        }
+
+
+        .nav-menu {
+            display: flex;                
+            gap: 20px;                   
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background-color: rgba(255,255,255,0.15);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .nav-menu a:hover {
+             background-color: rgba(255,255,255,0.3);
+             transform: scale(1.05);
+         }
+
+         body.dark-theme .header {
+             background: linear-gradient(135deg, #1a1a2e, #2d2d4a);
+         }
+
+         body.dark-theme .nav-menu a {
+             background-color: rgba(255,255,255,0.1);
+         }
+
+         body.dark-theme .nav-menu a:hover {
+             background-color: rgba(255,255,255,0.2);
+         }
+
+
+        /* --- Основной контент --- */
+        main {
+            flex-grow: 1;
+             padding-top: 80px; 
+             padding-bottom: 60px; 
+             display: flex;
+             justify-content: center; 
+             max-width: 1200px;
+             margin: 0 auto;
+         }
+
+         /* --- Блок для избранного (если оно есть) --- */
+         .favorites-grid {
+             width: 100%;
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             gap: 25px; 
+         }
+
+         /* --- Карточка автомобиля (такая же как в Lada.html) --- */
+         .car-card {
+             background-color: #ffffff;
+             border-radius: 16px;
+             box-shadow:
+                 0 10px 30px rgba(0, 0, 0, 0.07),
+                 inset 0 -1px 0 rgba(0,0,0,0.03);
+             overflow: hidden;
+         }
+
+         .car-card-image img {
+             width: 100%;
+             height: 180px;
+             object-fit: cover;
+         }
+
+         .car-card-content {
+             padding: 25px;
+         }
+
+         .car-title {
+               font-size: 24px;
+               font-weight: bold;
+               margin-bottom: 15px;
+               color: #2c3e50;
+           }
+
+           .car-price {
+               font-size: 22px;
+               color: #e67e22; 
+               margin-bottom: 15px;
+           }
+           
+           .car-text {
+               margin-bottom: 12px;
+               color: #666; 
+           }
+ body.dark-theme {
+    background-color: #121212; /* Темный фон всей страницы */
+    color: #e0e0e0; /* Светлый цвет для основного текста */
+}
+
+/* Шапка становится черной */
+body.dark-theme .header {
+    background: linear-gradient(135deg, #1a1a2e, #2d2d4a);
+}
+
+/* Текст в меню становится чисто белым */
+body.dark-theme .nav-menu a {
+    color: white;
+}
+
+/* --- СТИЛИ ДЛЯ БОКОВОЙ ПАНЕЛИ (САЛОНА) --- */
+body.dark-theme .sidebar {
+    background-color: #2a2a2a; /* Серый фон панели */
+}
+body.dark-theme .sidebar h2 {
+    color: #f5f5f5; /* Светлый заголовок салона */
+    border-bottom: 2px solid #444; /* Темная нижняя граница */
+}
+body.dark-theme .sidebar p strong {
+    color: #b0b0b0; /* Светло-серый цвет для "подзаголовков" (Адрес, Телефон) */
+}
+body.dark-theme .sidebar ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+body.dark-theme .sidebar ul p {
+    color: #b0b0b0; /* Светло-серый текст списка услуг */
+}
+
+/* --- СТИЛИ ДЛЯ КАРТОЧЕК АВТОМОБИЛЕЙ --- */
+body.dark-theme .card-grid {
+    background-color: #1e1e1e; /* Темно-серый фон области с машинами */
+}
+body.dark-theme .car-card {
+    background-color: #2a2a2a; /* Серый фон карточки */
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3), /* Более темная тень */
+        inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+body.dark-theme .car-title {
+    color: #f5f5f5; /* Светлый заголовок машины */
+}
+body.dark-theme .car-price {
+    color: #ffd700; /* Золотой цвет для цены */
+}
+body.dark-theme .car-text {
+    color: #b0b0b0; /* Светло-серый текст характеристик */
+}
+
+/* --- ФУТЕР --- */
+body.dark-theme footer {
+    background-color: #1a1a1a; /* Темный фон футера */
+    color: white; /* Белый текст в футере */
+}
+
+/* Правило для перемещения кнопки */
+.right {
+    order: 999; /* Число должно быть больше, чем у других элементов */
+}
+
+/* --- СТИЛИ ДЛЯ КНОПКИ ПЕРЕКЛЮЧЕНИЯ --- */
+.theme-button {
+    /* Сбрасываем фон и рамки */
+    background: none; 
+    border: none; 
+    
+    /* Убираем наследуемые отступы */
+    padding: 0; 
+    
+    /* Цвет текста (значка) */
+    color: white; 
+    
+    /* Убираем контур при фокусе */
+    outline: none;
+    
+    /* Курсор при наведении */
+    cursor: pointer;
+    
+    /* Шрифт и размер значка */
+    font-size: 20px;
+}
+
+/* --- ПОЗИЦИОНИРОВАНИЕ КНОПКИ --- */
+/* Этот код нужен именно для страницы info.html,
+   где используется justify-content: space-between; */
+.theme-button {
+    order: 999; /* Выносим кнопку в конец строки */
+    margin-left: 25px; /* Отступ слева, чтобы не прилипала к меню */
+}
+
+
+          /* --- Кнопка "Удалить из избранного" --- */
+          .remove-fav-btn {
+              background-color: #e74c3c !important; /* Красный */
+              color: white !important;
+              border-radius : 35px; 
+              border-style:none !important; 
+              padding-left : calc(4rem + 15px); 
+              padding-right : calc(4rem + 15px); 
+              position : relative; 
+              overflow : hidden; 
+              cursor : pointer;
+          }
+          
+
+          /* --- Сообщение если избранное пустое --- */
+          .empty-message {
+              text-align: center;
+              font-size: 24px;
+              color: #999;
+              margin-top: 50px;
+          }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="header-inner">
+             <button class="theme-toggle right theme-button" id="theme-toggle">
+    🌙
+</button>
+           <div class="logo">
+               <img src="images/logo.jpg" alt="Логотип" width="40">
+           </div>
+           <h1>Автосалоны города Пскова</h1>
+           <div class="nav-menu">
+               <a href="index.html">На главную</a>
+               <a href="info.html">Информация</a>
+               <a href="map.html">Карта</a>
+               <a href="reviews.html">Отзывы</a>
+               <a href="favorites.html">Избранное</a>
+           </div>
+       </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        
+        <!-- Блок для отображения избранных машин -->
+        <div id="favorites-container" class="favorites-grid">
+            <!-- Машины будут загружаться сюда скриптом -->
+        </div>
+        
+        <!-- Сообщение, если машин нет -->
+        <div id="empty-message" class="empty-message" style="display:none;">
+            ❌ Ваш список избранного пуст.
+            <br>
+            Вернитесь в каталог и добавьте понравившиеся автомобили.
+        </div>
+        
+    </main>
+
+    <script>
+      // --- Данные всех автомобилей (как в Lada.html) ---
+      const allCars = [
+          { id: 'lada_granta', name: "Lada Granta", price: "от 780 000 ₽", image_url:"images/гранта.webp"},
+          { id: 'Lada_Niva_Legend', name: "Lada Niva Legend", price:"от 1 019 000 ₽", image_url:"images/нива легенд.webp"},
+          { id: 'Lada_Niva_Trevel', name:"Lada Niva Travel", price:"от 1 343 000 ₽", image_url:"images/нива тревел.jpeg"},
+          { id: 'lada_Iskra', name:"Lada Iskra", price:"от 1 277 000 ₽", image_url:"images/искра.webp"},
+          { id: 'lada_Largus', name:"Lada Largus", price:"от 1 457 000 ₽", image_url:"images/ларгус.webp"},
+          { id: 'lada_Vesta', name:"Lada Vesta", price:"от 1 483 000 ₽", image_url:"images/веста.webp"},
+          { id: 'lada_Aura', name:"Lada Aura", price:"от 1 995 000 ₽", image_url:"images/аура.webp"},
+          { id: 'Omoda_C7', name:"Omoda C7", price:"от 2 735 000 ₽", image_url:"images/c7.webp"},
+          { id: 'Omoda_C5_NEW', name:"Omoda C5 NEW", price:"от 2 349 000 ₽", image_url:"images/c5 new.webp"},
+          { id: 'Omoda_C5', name:"Omoda C5", price:"от 2 279 000 ₽", image_url:"images/c5.webp"},
+          { id: 'сhangan_UNI_V', name:"Changan UNI-V", price:"от 2 859 900 ₽", image_url:"images/uni-v.webp"},
+          { id: 'сhangan_UNI_T', name:"Changan UNI-T", price:"от 2 419 900 ₽", image_url:"images/uni-t.webp"},
+          { id: 'сhangan_UNI_S', name:"Changan UNI-S", price:"от 2 329 900 ₽", image_url:"images/uni-s.webp"},
+          { id: 'сhangan_UNI_L', name:"Changan UNI-L", price:"от 2 549 900 ₽", image_url:"images/uni-l.webp"},
+          { id: 'сhangan_UNI_K', name:"Changan UNI-K", price:"от 3 619 900 ₽", image_url:"images/uni-k.webp"},
+          { id: 'chery_TIGGO_9', name:"Chery TIGGO 9", price:"от 3 635 000 ₽", image_url:"images/tiggo 9.jpg"},
+          { id: 'chery_TIGGO_8_promax', name:"Chery TIGGO 8 ПРО МАКС", price:"от 3 205 000 ₽", image_url:"images/tiggo 8 pro max.webp"},
+          { id: 'chery_TIGGO_7L', name:"Chery TIGGO 7L", price:"от 2 685 000 ₽", image_url:"images/tiggo 7l.webp"},
+          { id: 'chery_ARRIZO_8', name:"Chery ARRIZO 8", price:"от 2 499 000 ₽", image_url:"images/arrizo 8.webp"},
+          { id: 'haval_JOLION', name:"Haval JOLION", price:"от 1 999 000 ₽", image_url:"images/jolion.webp"},
+          { id: 'haval_M6', name:"Haval M6", price:"от 1 999 000 ₽", image_url:"images/m6.webp"},
+          { id: 'haval_F7', name:"Haval F7", price:"от 2 849 000 ₽", image_url:"images/f7.webp"},
+          { id: 'haval_F7X', name:"Haval F7X", price:"от 3 799 000 ₽", image_url:"images/f7x.webp"},
+          { id: 'haval_DARGO', name:"Haval DARGO", price:"от 3 499 000 ₽", image_url:"images/dargio.webp"},
+          { id: 'haval_POER', name:"Haval POER", price:"от 3 599 000 ₽", image_url:"images/poer.jpg"},
+          { id: 'haval_POER_KINGKONG', name:"Haval POER KINGKONG", price:"от 3 299 000 ₽", image_url:"images/kingkong.webp"},
+          { id: 'hyundai_Santa_Fe', name:"Hyundai Santa Fe", price:"от 500 000 ₽", image_url:"images/santa fe.webp"},
+          { id: 'hyundai_Solaris', name:"Hyundai Solaris", price:"от 1 079 000 ₽", image_url:"images/solaris.jpg"},
+          { id: 'hyundai_Tucson', name:"Hyundai Tucson", price:"от 2 079 000 ₽", image_url:"images/tucson.webp"},
+          { id: 'hyundai_Creta', name:"Hyundai Creta", price:"от 1 599 000 ₽", image_url:"images/creta.webp"},
+          { id: 'hyundai_ix35', name:"Hyundai ix35", price:"от 1 864 900 ₽", image_url:"images/ix35.webp"},
+          { id: 'hyundai_Elantra', name:"Hyundai Elantra", price:"от 1 949 000 ₽", image_url:"images/elantra.webp"},
+          { id: 'hyundai_Sonata', name:"Hyundai Sonata", price:"от 2 424 000 ₽", image_url:"images/sonata.webp"},
+          { id: 'hyundai_i40', name:"Hyundai i40", price:"от 2 550 000 ₽", image_url:"images/i40.webp"},
+          { id: 'hyundai_i30', name:"Hyundai i30", price:"от 2 990 000 ₽", image_url:"images/i30.webp"},
+          { id: 'geely_EX5_EM_i', name:"Geely EX5 EM-i", price:"от 3 369 990 ₽", image_url:"images/Geely EX5 EM-i.webp"},
+          { id: 'geely_COOLRAY', name:"Geely COOLRAY", price:"от 2 739 990 ₽", image_url:"images/Geely COOLRAY.webp"},
+          { id: 'geely_CITYRAY', name:"Geely CITYRAY", price:"от 2 579 990 ₽", image_url:"images/Geely CITYRAY.webp"},
+          { id: 'geely_ATLAS', name:"Geely ATLAS", price:"от 3 189 990 ₽", image_url:"images/Geely ATLAS.webp"},
+          { id: 'geely_OKAVANGO', name:"Geely OKAVANGO", price:"от 3 422 990 ₽", image_url:"images/Geely OKAVANGO.webp"},
+          { id: 'geely_MONJARO', name:"Geely MONJARO", price:"от 4 349 990 ₽", image_url:"images/Geely MONJARO.webp"},
+          { id: 'geely_PREFACE', name:"Geely PREFACE", price:"от 3 079 990 ₽", image_url:"images/Geely PREFACE.webp"},
+          { id: 'geely_EX5', name:"Geely EX5", price:"от 3 769 990 ₽", image_url:"images/Geely EX5.webp"},
+          { id: 'Mitsubishi_Outlander', name:"Mitsubishi Outlander", price:"от 3 500 000 ₽", image_url:"images/Mitsubishi Outlander.webp"},
+          { id: 'Mitsubishi_ASXY', name:"Mitsubishi ASXY", price:"от 3 960 000 ₽", image_url:"images/Mitsubishi ASXY.webp"},
+          { id: 'Mitsubishi_Eclipse_Cross', name:"Mitsubishi Eclipse Cross", price:"от 2 700 000 ₽", image_url:"images/Mitsubishi Eclipse Cross.webp"},
+          { id: 'Mitsubishi_Pajero_Sport', name:"Mitsubishi Pajero Sport", price:"от 3 650 000 ₽", image_url:"images/Mitsubishi Pajero Sport.webp"},
+          { id: 'Mitsubishi_L200', name:"Mitsubishi L200", price:"от 3 800 000 ₽", image_url:"images/Mitsubishi L200.webp"},
+          { id: 'jaecoo_J6', name:"Jaecoo J6", price:"от 2 290 000 ₽", image_url:"images/Jaecoo J6.webp"},
+          { id: 'jaecoo_J8', name:"Jaecoo J8", price:"от 3 894 000 ₽", image_url:"images/Jaecoo J8.webp"},
+          { id: 'jaecoo_J7', name:"Jaecoo J7", price:"от 2 769 000 ₽", image_url:"images/Jaecoo J7.webp"},
+          { id: 'jaecoo_J7_new', name:"Jaecoo Новый J7", price:"от 2 769 000 ₽", image_url:"images/Jaecoo Новый J7.webp"}
+      ];
+
+      const container = document.getElementById('favorites-container');
+      const emptyMessage = document.getElementById('empty-message');
+
+      // Функция для отображения списка избранного
+      function showFavorites() {
+          // Получаем список ID из памяти браузера
+          const favorites = JSON.parse(localStorage.getItem('lada_favorites')) || [];
+          
+          // Очищаем контейнер перед загрузкой
+          container.innerHTML = '';
+
+          if (favorites.length === 0) {
+              // Если список пуст, показываем сообщение
+              emptyMessage.style.display = 'block';
+              return; // Останавливаем функцию
+          } else {
+              emptyMessage.style.display = 'none';
+          }
+
+          // Проходим по всем машинам в базе данных
+          allCars.forEach(car => {
+              // Проверяем, есть ли ID этой машины в списке избранного пользователя
+              if (favorites.includes(car.id)) {
+                  // Если есть - создаем карточку для отображения
+                  createFavoriteCard(car);
+              }
+          });
+      }
+
+
+      // Функция для создания карточки на странице "Избранное"
+      function createFavoriteCard(car) {
+          const cardDiv = document.createElement('div');
+          cardDiv.classList.add('car-card');
+          
+          cardDiv.innerHTML = `
+              <div class="car-card-image">
+                  <img src="${car.image_url}" alt="${car.name}">
+              </div>
+              <div class="car-card-content">
+                  <h3 class="car-title">${car.name}</h3>
+                  <p class="car-price">${car.price}</p>
+                  <button class="remove-fav-btn" onclick="removeFromFavorites('${car.id}')">
+                      Удалить из избранного
+                  </button>
+              </div>
+          `;
+          
+          container.appendChild(cardDiv);
+      }
+
+
+      // Функция для удаления из избранного (работает на странице favorites.html)
+      function removeFromFavorites(carId) {
+          let favorites = JSON.parse(localStorage.getItem('lada_favorites')) || [];
+          
+          // Фильтруем массив, удаляя выбранный ID
+          favorites = favorites.filter(id => id !== carId);
+          
+          // Сохраняем обновленный список обратно в память браузера
+          localStorage.setItem('lada_favorites', JSON.stringify(favorites));
+          
+          // Обновляем страницу, чтобы изменения отобразились сразу
+          showFavorites(); 
+      }
+
+
+      // Запускаем отображение при загрузке страницы
+      document.addEventListener('DOMContentLoaded', showFavorites);
+
+
+      /* --- ВАЖНО! ---
+         Теперь нужно изменить логику добавления в избранное на всех страницах (Lada.html и др.),
+         чтобы она работала с этим массивом allCars. Замените функцию toggleFav на эту:
+      */
+      window.toggleFav = function(button) {
+          const carId = button.getAttribute('data-id');
+          
+          let favorites = JSON.parse(localStorage.getItem('lada_favorites')) || [];
+          
+          const isFavorite = favorites.includes(carId);
+          
+          if (isFavorite) {
+              favorites = favorites.filter(id => id !== carId);
+          } else {
+              favorites.push(carId);
+          }
+          
+          localStorage.setItem('lada_favorites', JSON.stringify(favorites));
+          
+          // Обновляем вид кнопки (звездочка и текст)
+          updateFavButton(button, !isFavorite);
+      };
+      
+      window.updateFavButton = function(button, isAdded) {
+          if (isAdded) {
+             button.classList.add('added');
+             button.innerHTML = '<span>★</span> В избранном';
+         } else {
+             button.classList.remove('added');
+             button.innerHTML = '<span>☆</span> В избранное';
+         }
+      };
+      
+    </script>
+    <script>
+    // Получаем кнопку и тело страницы
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Проверяем, была ли тема сохранена в LocalStorage (например, если пользователь уже выбирал её)
+    const savedTheme = localStorage.getItem('theme');
+
+    // Если сохранена темная тема, сразу применяем её при загрузке страницы
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-theme');
+        // Меняем иконку на солнышко, если нужно
+        themeToggleBtn.textContent = '☀️';
+    }
+
+    // Добавляем обработчик клика на кнопку
+    themeToggleBtn.addEventListener('click', () => {
+        // Переключаем класс dark-theme у тега body
+        body.classList.toggle('dark-theme');
+        
+        // Проверяем, активна ли темная тема сейчас
+        const isDark = body.classList.contains('dark-theme');
+        
+        // Меняем иконку в зависимости от темы
+        themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+        
+        // Сохраняем выбор пользователя в LocalStorage, чтобы тема не сбрасывалась при перезагрузке
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+</script>
+</body>
+</html>

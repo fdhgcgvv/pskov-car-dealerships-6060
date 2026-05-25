@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы об автосалонах Пскова</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            height: auto;
+            width: 150px;
+        }
+
+        .header-inner h1 {
+            margin: 0 20px;              
+            font-size: 20px;             
+            flex-grow: 1;               
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background-color: rgba(255,255,255,0.15);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+
+         footer {
+             background:#fff;
+             color:#333 !important;
+             text-align: center;
+             padding: 15px 0;
+         }
+
+         body.dark-theme {
+    background-color: #121212; /* Темный фон всей страницы */
+    color: #e0e0e0; /* Светлый цвет для основного текста */
+}
+
+/* Шапка становится черной */
+body.dark-theme .header {
+    background: linear-gradient(135deg, #1a1a2e, #2d2d4a);
+}
+
+/* Текст в меню становится чисто белым */
+body.dark-theme .nav-menu a {
+    color: white;
+}
+
+/* --- СТИЛИ ДЛЯ БОКОВОЙ ПАНЕЛИ (САЛОНА) --- */
+body.dark-theme .sidebar {
+    background-color: #2a2a2a; /* Серый фон панели */
+}
+body.dark-theme .sidebar h2 {
+    color: #f5f5f5; /* Светлый заголовок салона */
+    border-bottom: 2px solid #444; /* Темная нижняя граница */
+}
+body.dark-theme .sidebar p strong {
+    color: #b0b0b0; /* Светло-серый цвет для "подзаголовков" (Адрес, Телефон) */
+}
+body.dark-theme .sidebar ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+body.dark-theme .sidebar ul p {
+    color: #b0b0b0; /* Светло-серый текст списка услуг */
+}
+
+/* --- СТИЛИ ДЛЯ КАРТОЧЕК АВТОМОБИЛЕЙ --- */
+body.dark-theme .card-grid {
+    background-color: #1e1e1e; /* Темно-серый фон области с машинами */
+}
+body.dark-theme .car-card {
+    background-color: #2a2a2a; /* Серый фон карточки */
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3), /* Более темная тень */
+        inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+body.dark-theme .car-title {
+    color: #f5f5f5; /* Светлый заголовок машины */
+}
+body.dark-theme .car-price {
+    color: #ffd700; /* Золотой цвет для цены */
+}
+body.dark-theme .car-text {
+    color: #b0b0b0; /* Светло-серый текст характеристик */
+}
+
+/* --- ФУТЕР --- */
+body.dark-theme footer {
+    background-color: #1a1a1a; /* Темный фон футера */
+    color: white; /* Белый текст в футере */
+}
+
+/* Правило для перемещения кнопки */
+.right {
+    order: 999; /* Число должно быть больше, чем у других элементов */
+}
+
+/* --- СТИЛИ ДЛЯ КНОПКИ ПЕРЕКЛЮЧЕНИЯ --- */
+.theme-button {
+    /* Сбрасываем фон и рамки */
+    background: none; 
+    border: none; 
+    
+    /* Убираем наследуемые отступы */
+    padding: 0; 
+    
+    /* Цвет текста (значка) */
+    color: white; 
+    
+    /* Убираем контур при фокусе */
+    outline: none;
+    
+    /* Курсор при наведении */
+    cursor: pointer;
+    
+    /* Шрифт и размер значка */
+    font-size: 20px;
+}
+
+/* --- ПОЗИЦИОНИРОВАНИЕ КНОПКИ --- */
+/* Этот код нужен именно для страницы info.html,
+   где используется justify-content: space-between; */
+.theme-button {
+    order: 999; /* Выносим кнопку в конец строки */
+    margin-left: 25px; /* Отступ слева, чтобы не прилипала к меню */
+}
+
+
+        main {
+            flex-grow: 1;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .review-form {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .review-form h2 {
+            margin-bottom: 25px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .rating-stars {
+          display: flex;
+          gap: 5px;
+        }
+
+        .star {
+          font-size: 28px;
+          color: #ccc; 
+          cursor: pointer;
+          transition: color 0.2s ease;
+        }
+
+        .star.selected, .star.hover {
+          color: #f39c12;
+        }
+
+        .submit-btn {
+          width: 100%;
+          padding: 15px;
+          background-color: #3498db;
+          color: white !important;
+          border-radius: 25px;
+          border: none;
+          font-size: 18px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .submit-btn[disabled] {
+          background-color: #b2c0c8; 
+          cursor: not-allowed;
+        }
+
+         .reviews-list {
+           display: flex;
+           flex-direction: column;
+           gap: 25px; 
+         }
+ 
+         .review-card {
+           background-color: white;
+           border-radius: 12px;
+           padding: 25px; 
+           box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+         }
+ 
+         .review-card h3 {
+           margin-top: 0 !important; 
+           margin-bottom: 10px !important; 
+         }
+ 
+         .review-card p {
+           margin-bottom: 15px !important;
+         }
+ 
+         .review-card .rating-stars {
+           gap: 3px; 
+         }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <button class="theme-toggle right theme-button" id="theme-toggle">
+    🌙
+</button>
+           <div class="logo">
+               <img src="images/logo.jpg" alt="Логотип" width="40">
+           </div>
+           <h1>Автосалоны города Пскова</h1>
+           <div class="nav-menu">
+               <a href="index.html">На главную</a>
+               <a href="info.html">Информация</a>
+               <a href="map.html">Карта</a>
+               <a href="reviews.html">Отзывы</a>
+               <a href="favorites.html">Избранное</a>
+           </div>
+       </div>
+    </header>
+
+    <main>
+        
+        <h1 class="section-title">Оставьте ваш отзыв</h1>
+        
+        <form class="review-form" id="reviewForm">
+            
+           <h2>Ваш отзыв об автосалоне</h2>
+           
+           <div class="form-group">
+               <label for="salonSelect">Выберите автосалон:</label>
+               <select id="salonSelect" name="salon" required>
+                   <option value="" disabled selected></option>
+                   <option value="Прагматика Псков, Lada">Прагматика Псков, Lada</option>
+                   <option value="Omoda, АвтоАС">Omoda, АвтоАС</option>
+                   <option value="Автосалон №1 Changan">Автосалон №1 Changan</option>
+                   <option value="Chery центр">Chery центр</option>
+                   <option value="Автотим, Haval">Автотим, Haval</option>
+                   <option value="Автосалон 1, Hyundai">Автосалон 1, Hyundai</option>
+                   <option value="Автотим, Geely">Автотим, Geely</option>
+                   <option value="Mitsubishi">Mitsubishi</option>
+                   <option value="Jaecoo АвтоАС">Jaecoo АвтоАС</option>
+               </select>
+           </div>
+           
+           <div class="form-group">
+               <label for="comment">Комментарий</label>
+               <textarea id="comment" name="comment" rows="4" placeholder="Расскажите о вашем опыте..." required></textarea>
+           </div>
+           
+           <div class="form-group">
+               <label>Оценка (от 1 до 5)</label>
+               <div class="rating-stars" id="ratingStars">
+                   <span class="star" data-value="1">★</span>
+                   <span class="star" data-value="2">★</span>
+                   <span class="star" data-value="3">★</span>
+                   <span class="star" data-value="4">★</span>
+                   <span class="star" data-value="5">★</span>
+               </div>
+               <input type="hidden" id="selectedRating" name="rating" value="0">
+           </div>
+           
+           <button type="submit" class="submit-btn" disabled>Отправить отзыв</button>
+           
+       </form>
+       
+       <h2 class="section-title">Отзывы пользователей</h2>
+       <div class="reviews-list" id="reviewsContainer">
+  
+       </div>
+       
+    </main>
+
+
+    <script>
+      const form = document.getElementById('reviewForm');
+      const salonSelect = document.getElementById('salonSelect');
+      const commentInput = document.getElementById('comment');
+      const stars = document.querySelectorAll('.star');
+      const selectedRatingInput = document.getElementById('selectedRating');
+      const reviewsContainer = document.getElementById('reviewsContainer');
+      
+      let selectedRating = 0; 
+
+      function updateButtonState() {
+          const btn = form.querySelector('.submit-btn');
+          const isSalonSelected = salonSelect.value !== "";
+          const isCommentFilled = commentInput.value.trim() !== "";
+          const isRatingSelected = selectedRating > 0;
+          
+          if(isSalonSelected && isCommentFilled && isRatingSelected) {
+              btn.disabled = false; 
+          } else {
+              btn.disabled = true; 
+          }
+      }
+      
+      salonSelect.addEventListener('change', updateButtonState);
+      commentInput.addEventListener('input', updateButtonState);
+      selectedRatingInput.addEventListener('input', updateButtonState);
+
+
+      stars.forEach(star => {
+          star.addEventListener('click', () => {
+              selectedRating = parseInt(star.dataset.value);
+              selectedRatingInput.value = selectedRating; 
+              
+              stars.forEach(s => {
+                  if(parseInt(s.dataset.value) <= selectedRating) {
+                      s.classList.add('selected');
+                  } else {
+                      s.classList.remove('selected');
+                  }
+              });
+              
+              updateButtonState();
+          });
+          
+          star.addEventListener('mouseover', () => {
+              const hoverValue = parseInt(star.dataset.value);
+              stars.forEach(s => {
+                  if(parseInt(s.dataset.value) <= hoverValue) {
+                      s.classList.add('hover');
+                  } else {
+                      s.classList.remove('hover');
+                  }
+              });
+          });
+          
+          star.addEventListener('mouseout', () => {
+              stars.forEach(s => s.classList.remove('hover'));
+          });
+      });
+
+
+      form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const salonName = salonSelect.value.trim();
+          const commentText = commentInput.value.trim();
+          
+          if(salonName && commentText && selectedRating > 0) {
+              const newReview = {
+                  id: Date.now(),
+                  salonName,
+                  commentText,
+                  ratingValue: selectedRating,
+                  dateAdded: new Date().toLocaleString()
+              };
+              
+              addReviewToDOM(newReview); 
+              saveReviewsToStorage();
+              
+              form.reset();
+              stars.forEach(s => s.classList.remove('selected', 'hover'));
+              selectedRating = 0;
+              selectedRatingInput.value = '0';
+              updateButtonState();
+          }
+      });
+
+
+      function addReviewToDOM(review) {
+          const reviewDiv = document.createElement('div');
+          reviewDiv.classList.add('review-card');
+          
+          const starsHTML = Array(5).fill(0).map((_, i) => {
+              return `<span style="color:${i < review.ratingValue ? '#f39c12' : '#ccc'}; font-size:24px;">★</span>`;
+          }).join('');
+          
+          reviewDiv.innerHTML = `
+              <!-- КНОПКИ УДАЛЕНИЯ ЗДЕСЬ НЕТ -->
+              
+              <!-- Содержимое отзыва -->
+              <h3>${review.salonName}</h3>
+              <p>${review.commentText}</p>
+              <div>${starsHTML}</div>
+          `;
+          
+          reviewsContainer.prepend(reviewDiv);
+      }
+
+
+      const STORAGE_KEY = 'pskov-auto-reviews';
+      
+      function saveReviewsToStorage() {
+         const reviewsHTMLArray = Array.from(reviewsContainer.children);
+         
+     }
+     
+     function loadReviewsFromStorage() {
+         const savedReviewsJSON = localStorage.getItem(STORAGE_KEY);
+         
+         if(savedReviewsJSON) {
+             const reviewsArray = JSON.parse(savedReviewsJSON);
+             
+             reviewsContainer.innerHTML = ''; 
+             
+             reviewsArray.forEach(addReviewToDOM);
+             
+         }
+     }
+     
+     function getReviewsFromStorage() {
+         const savedReviewsJSON = localStorage.getItem(STORAGE_KEY);
+         return savedReviewsJSON ? JSON.parse(savedReviewsJSON) : [];
+     }
+
+
+     loadReviewsFromStorage(); 
+   </script>
+   <script>
+    // Получаем кнопку и тело страницы
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Проверяем, была ли тема сохранена в LocalStorage
+    const savedTheme = localStorage.getItem('theme');
+
+    // Если сохранена темная тема, применяем её при загрузке
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-theme');
+        themeToggleBtn.textContent = '☀️'; // Меняем иконку на солнышко
+    }
+
+    // Обработчик клика на кнопку
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-theme'); // Переключаем класс у body
+
+        // Проверяем, активна ли темная тема сейчас
+        const isDark = body.classList.contains('dark-theme');
+        
+        // Меняем иконку и сохраняем настройку
+        themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+</script>
+
+<footer>
+        <p>© Каталог автосалонов города Пскова | Все права защищены.</p>
+    </footer>
+
+</body>
+</html>

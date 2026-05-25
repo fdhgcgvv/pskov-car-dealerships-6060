@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация - Автосалоны Пскова</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            height: auto;
+            width: 150px;
+        }
+
+        .header-inner h1 {
+            margin: 0 20px;              
+            font-size: 20px;             
+            flex-grow: 1;               
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background-color: rgba(255,255,255,0.15);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+
+        main {
+            flex-grow: 1;
+             display: flex;
+             flex-direction: column;
+            justify-content: flex-start; 
+         }
+
+          .sidebar {
+             width: 1340px; /* Фиксированная ширина */
+             padding: 25px; 
+             background-color: white;
+             border-radius: 16px;
+             box-shadow:
+                 0 10px 30px rgba(0, 0, 0, 0.07),
+                 inset 0 -1px 0 rgba(0,0,0,0.03);
+             
+             /* НОВОЕ! Заставляем блок растягиваться на всю высоту родителя */
+             display: flex; 
+             flex-direction: column; 
+             justify-content: space-between; /* Распределяем контент сверху и снизу */
+             margin-bottom: 25px;
+             text-align: center;
+         }
+
+          .sidebar p strong {
+              color: #34495e;
+          }
+         
+         /* --- Правая колонка (Список автомобилей) --- */
+         .card-grid {
+             flex-grow: 1; /* Растягиваем список на всю доступную ширину */
+             display: grid; /* Сетка для карточек */
+             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             gap: 25px; 
+             
+             margin-left: 25px;
+             margin-right: 25px;
+         }
+
+         /* --- Карточка автомобиля --- */
+         .car-card {
+             background-color: #ffffff;
+             border-radius: 16px;
+             box-shadow:
+                 0 10px 30px rgba(0, 0, 0, 0.07),
+                 inset 0 -1px 0 rgba(0,0,0,0.03);
+             overflow: hidden;
+         }
+
+         .car-card-image img {
+             width: 100%;
+             height: 180px;
+             object-fit: cover;
+         }
+
+         .car-card-content {
+             padding: 25px;
+         }
+
+         .car-title {
+               font-size: 24px;
+               font-weight: bold;
+               margin-bottom: 15px;
+               color: #2c3e50;
+           }
+
+           .car-price {
+               font-size: 22px;
+               color: #e67e22; /* Оранжевый для цены */
+               margin-bottom: 15px;
+           }
+           
+           .car-text {
+               margin-bottom: 12px;
+               color: #666; 
+           }
+
+          /* --- Кнопка "В избранное" --- */
+          .fav-button {
+              background-color: transparent !important; 
+              border-radius: 25px; 
+              border-style:none !important; 
+              padding-left: calc(2rem + 15px); 
+              padding-right: calc(2rem + 15px); 
+              position: relative; 
+              overflow: hidden; 
+              cursor: pointer;
+              transition: background-color 0.3s ease, color 0.3s ease; 
+          }
+          
+          .fav-button::before {
+              content: '\2605'; 
+              font-size: calc(2rem / 1.6);
+              position: absolute; 
+              left: calc(2rem / 2);
+              top: calc(30% - (2rem / 2) / 1.6);
+          }
+          
+          .fav-button.added::before {
+              color: gold !important; 
+          }
+          
+          .fav-button.added::after {
+              content: ' В избранном';
+          }
+          
+          .fav-button::after {
+              content: ' В избранное';
+              margin-left: 15px; 
+          }
+          
+ body.dark-theme {
+    background-color: #121212; /* Темный фон всей страницы */
+    color: #e0e0e0; /* Светлый цвет для основного текста */
+}
+
+/* Шапка становится черной */
+body.dark-theme .header {
+    background: linear-gradient(135deg, #1a1a2e, #2d2d4a);
+}
+
+/* Текст в меню становится чисто белым */
+body.dark-theme .nav-menu a {
+    color: white;
+}
+
+/* --- СТИЛИ ДЛЯ БОКОВОЙ ПАНЕЛИ (САЛОНА) --- */
+body.dark-theme .sidebar {
+    background-color: #2a2a2a; /* Серый фон панели */
+}
+body.dark-theme .sidebar h2 {
+    color: #f5f5f5; /* Светлый заголовок салона */
+    border-bottom: 2px solid #444; /* Темная нижняя граница */
+}
+body.dark-theme .sidebar p strong {
+    color: #b0b0b0; /* Светло-серый цвет для "подзаголовков" (Адрес, Телефон) */
+}
+body.dark-theme .sidebar ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+body.dark-theme .sidebar ul p {
+    color: #b0b0b0; /* Светло-серый текст списка услуг */
+}
+
+/* --- СТИЛИ ДЛЯ КАРТОЧЕК АВТОМОБИЛЕЙ --- */
+body.dark-theme .card-grid {
+    background-color: #1e1e1e; /* Темно-серый фон области с машинами */
+}
+body.dark-theme .car-card {
+    background-color: #2a2a2a; /* Серый фон карточки */
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3), /* Более темная тень */
+        inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+body.dark-theme .car-title {
+    color: #f5f5f5; /* Светлый заголовок машины */
+}
+body.dark-theme .car-price {
+    color: #ffd700; /* Золотой цвет для цены */
+}
+body.dark-theme .car-text {
+    color: #b0b0b0; /* Светло-серый текст характеристик */
+}
+
+/* --- ФУТЕР --- */
+body.dark-theme footer {
+    background-color: #1a1a1a; /* Темный фон футера */
+    color: white; /* Белый текст в футере */
+}
+
+/* Правило для перемещения кнопки */
+.right {
+    order: 999; /* Число должно быть больше, чем у других элементов */
+}
+
+/* --- СТИЛИ ДЛЯ КНОПКИ ПЕРЕКЛЮЧЕНИЯ --- */
+.theme-button {
+    /* Сбрасываем фон и рамки */
+    background: none; 
+    border: none; 
+    
+    /* Убираем наследуемые отступы */
+    padding: 0; 
+    
+    /* Цвет текста (значка) */
+    color: white; 
+    
+    /* Убираем контур при фокусе */
+    outline: none;
+    
+    /* Курсор при наведении */
+    cursor: pointer;
+    
+    /* Шрифт и размер значка */
+    font-size: 20px;
+}
+
+/* --- ПОЗИЦИОНИРОВАНИЕ КНОПКИ --- */
+/* Этот код нужен именно для страницы info.html,
+   где используется justify-content: space-between; */
+.theme-button {
+    order: 999; /* Выносим кнопку в конец строки */
+    margin-left: 25px; /* Отступ слева, чтобы не прилипала к меню */
+}
+
+           footer {
+             background:#fff;
+             color:#333 !important;
+             text-align: center;
+             padding: 15px 0;
+             margin-top: 25px;
+         }
+
+         .sidebar h2 {
+             color: #2c3e50;
+             border-bottom: 2px solid #2c3e50;
+         }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <button class="theme-toggle right theme-button" id="theme-toggle">
+    🌙
+</button>
+           <div class="logo">
+               <img src="images/logo.jpg" alt="Логотип Автосалоны Пскова" width="40">
+           </div>
+           <h1>Автосалоны города Пскова</h1>
+           <div class="nav-menu">
+               <a href="index.html">На главную</a>
+               <a href="info.html">Информация</a>
+               <a href="map.html">Карта</a>
+               <a href="reviews.html">Отзывы</a>
+               <a href="favorites.html">Избранное</a>
+           </div>
+       </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        
+        <!-- Блок с информацией о салоне (ЛЕВАЯ ЧАСТЬ) -->
+        <aside class="sidebar">
+            
+                <h2 style="color: #384b5e; font-size: 30px; margin-bottom: 20px;">Omoda, АвтоАС</h2>
+                
+                <p><strong>Адрес:</strong> ул. Леона Поземского, д. 114А</p>
+                
+                <p><strong>Телефон:</strong> +7 112 59-15-45</p>
+                
+                <p><strong>Услуги:</strong></p>
+                <ul style="list-style-type: disc; padding-left: 25px;">
+                    <p>Продажа новых автомобилей Omoda</p>
+                    <p>Техническое обслуживание</p>
+                    <p>Оригинальные запчасти и аксессуары</p>
+                    <p>Программа Trade-In (Обмен вашего авто на новый)</p>
+                    <p>Тест-драйв на автомобилях</p>
+                    <p>Кредитование и лизинг на специальных условиях</p>
+                </ul>
+            </div>
+            
+            <div style="flex-grow: 1"></div> 
+            
+        </aside>
+
+        <!-- Список автомобилей (ПРАВАЯ ЧАСТЬ) -->
+        <div class="card-grid">
+   
+           <!-- Карточка автомобиля №2 -->
+           <div class="car-card" data-id="Omoda_C7">
+                <div class="car-card-image">
+                    <img src="images/c7.webp" alt="Lada Vesta">
+                </div>
+                <div class="car-card-content">
+                    <h3 class="car-title">Omoda C7</h3>
+                    <p class="car-price">от 2 735 000 ₽</p>
+                    <p class="car-text"><strong>Класс:</strong> Кроссовер</p>
+                    <p class="car-text"><strong>Двигатель:</strong> Бензиновый, турбо, от 1.6 л</p>
+                    <button class="fav-button" onclick="toggleFav(this)" data-id="Omoda_C7"></button>
+                </div>
+           </div>
+           
+           <!-- Карточка автомобиля №3 -->
+           <div class="car-card" data-id="Omoda_C5_NEW">
+                <div class="car-card-image">
+                    <img src="images/c5 new.webp" alt="Lada Niva Travel">
+                </div>
+                <div class="car-card-content">
+                    <h3 class="car-title">Omoda C5 NEW</h3>
+                    <p class="car-price">от 2 349 000 ₽</p>
+                    <p class="car-text"><strong>Класс:</strong> Кроссовер</p>
+                    <p class="car-text"><strong>Двигатель:</strong> Бензиновый, турбо, от 1.6 л</p>
+                    <button class="fav-button" onclick="toggleFav(this)" data-id="Omoda_C5_NEW"></button>
+                </div>
+           </div>
+
+           <div class="car-card" data-id="Omoda_C5">
+                <div class="car-card-image">
+                    <img src="images/c5.webp" alt="Lada Niva Travel">
+                </div>
+                <div class="car-card-content">
+                    <h3 class="car-title">Omoda C5</h3>
+                    <p class="car-price">от 2 279 000 ₽</p>
+                    <p class="car-text"><strong>Класс:</strong> Кроссовер</p>
+                    <p class="car-text"><strong>Двигатель:</strong> Бензиновый, турбо, от 1.5 л</p>
+                    <button class="fav-button" onclick="toggleFav(this)" data-id="Omoda_C5"></button>
+                </div>
+           </div>
+       </div>
+    </main>
+
+
+    <!-- Футер сайта -->
+    <footer style="background:#fff; color:#333 !important">
+        <p>© Автосалоны города Пскова | Все права защищены.</p>
+    </footer>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> <!-- Лист подключать не обязательно для этой страницы -->
+    
+    <script>
+      // Функция для добавления/удаления из избранного
+      function toggleFav(button) {
+          const carId = button.getAttribute('data-id');
+          
+          // Получаем список избранного из памяти браузера
+          let favorites = JSON.parse(localStorage.getItem('lada_favorites')) || [];
+          
+          // Проверяем, есть ли уже эта машина в избранном
+          const isFavorite = favorites.includes(carId);
+          
+          if (isFavorite) {
+              // Если есть - удаляем из массива
+              favorites = favorites.filter(id => id !== carId);
+          } else {
+              // Если нет - добавляем в массив
+              favorites.push(carId);
+          }
+          
+          // Сохраняем обновленный список обратно в память браузера
+          localStorage.setItem('lada_favorites', JSON.stringify(favorites));
+          
+          // Обновляем вид кнопки (звездочка и текст)
+          updateFavButton(button, !isFavorite);
+      }
+      
+      function updateFavButton(button, isAdded) {
+          if (isAdded) {
+             button.classList.add('added');
+         } else {
+             button.classList.remove('added');
+         }
+      }
+      
+      // При загрузке страницы проверяем избранное и обновляем кнопки
+      document.addEventListener('DOMContentLoaded', () => {
+          const favorites = JSON.parse(localStorage.getItem('lada_favorites')) || [];
+          
+          document.querySelectorAll('.fav-button').forEach(button => {
+             const carId = button.getAttribute('data-id');
+             if (favorites.includes(carId)) {
+                 updateFavButton(button, true);
+             } else {
+                 updateFavButton(button, false);
+             }
+         });
+      });
+    </script>
+    <script>
+    // Получаем кнопку и тело страницы
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Проверяем, была ли тема сохранена в LocalStorage
+    const savedTheme = localStorage.getItem('theme');
+
+    // Если сохранена темная тема, применяем её при загрузке
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-theme');
+        themeToggleBtn.textContent = '☀️'; // Меняем иконку на солнышко
+    }
+
+    // Обработчик клика на кнопку
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-theme'); // Переключаем класс у body
+
+        // Проверяем, активна ли темная тема сейчас
+        const isDark = body.classList.contains('dark-theme');
+        
+        // Меняем иконку и сохраняем настройку
+        themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+</script>
+</body>
+</html>
